@@ -1,0 +1,81 @@
+version: 2.1
+parameters:
+  image-tag:
+    type: string
+    default: "latest"
+  workingdir:
+    type: string
+    default: "~/main"
+    
+commands: # a reusable command with parameters
+  print:
+    parameters:
+      message:
+        type: string
+    steps:
+      - run: echo << parameters.message >>
+      
+  copy-markdown:
+    parameters:
+      destination:
+        description: destination directory
+        type: string
+        default: docs
+    steps:
+      - run: cp *.md << parameters.destination >>
+  
+  greeting:
+    parameters:
+      to:
+        default: "world"
+        type: string
+    steps:
+      - run: echo "Hello << parameters.to >>"
+
+jobs:
+  cat-file:
+    docker:
+      - image: cimg/base:stable
+        auth:
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+    parameters:
+      file:
+        type: string
+    steps:
+      - print:
+          message: Printing << parameters.file >> << pipeline.parameters.workingdir >>
+      - run: echo "this is text inside << parameters.file >> file" > "<< parameters.file >>"
+      - run: cat << parameters.file >>
+    
+  my-job:
+    docker:
+      - image: cimg/base:stable
+        auth:
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+    steps:
+      - greeting:
+          to: "Austin"
+
+  variables-test:
+    docker:
+      - image: cimg/base:stable
+        auth:
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+    steps:
+      - checkout
+      - run: echo $url
+      - run:
+          name: test shell script with variable
+          command: bash var_test.sh
+
+workflows:
+  my-workflow:
+    jobs:
+      - my-job
+      - cat-file:
+          file: test.txt
+      - variables-test:
+          context: db_creds_test
