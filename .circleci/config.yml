@@ -34,6 +34,8 @@ workflows:
     jobs:
     - build
     - test:
+        context:
+          - prod_secrets
         requires:
         - build
     - hold-deployment-for-approval:
@@ -54,3 +56,5 @@ workflows:
             branches:
               only:
                 - main
+
+# VS Code Extension Version: 1.0.1
