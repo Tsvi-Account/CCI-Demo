@@ -37,8 +37,6 @@ workflows:
         requires:
         - build
     - hold-deployment-for-approval:
-        context:
-          - admin_approval
         type: approval
         requires:
         - test
@@ -49,6 +47,7 @@ workflows:
     - deploy:
         context:
           - prod_secrets
+          - admin_approval
         requires:
           - hold-deployment-for-approval
         filters:
