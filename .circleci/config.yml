@@ -31,12 +31,8 @@ jobs:
 workflows:
   my-workflow:
     jobs:
-    - build:
-        context:
-          - prod_secret
+    - build
     - test:
-        context:
-          - prod_secrets
         requires:
         - build
     - hold-deployment-for-approval:
