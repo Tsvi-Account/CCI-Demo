@@ -33,7 +33,7 @@ workflows:
     jobs:
     - build:
         context:
-          - prod_secrets
+          - prod_secret
     - test:
         context:
           - prod_secrets
