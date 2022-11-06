@@ -17,6 +17,7 @@ workflows:
     - deploy:
         context:
           - prod_secrets
+          - admin_approval
         requires:
           - hold-deployment-for-approval
         filters:
