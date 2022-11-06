@@ -18,7 +18,7 @@ jobs:
     - run:
         name: "Testing app changes"
         command: |
-          echo "testing... "
+          echo "testing..."
   deploy:
     docker:
       - image: cimg/base:2021.07
