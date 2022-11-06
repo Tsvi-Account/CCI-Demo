@@ -1,29 +1,4 @@
 version: 2.1
-workflows:
-  my-workflow:
-    jobs:
-    - build
-    - test:
-        requires:
-        - build
-    - hold-deployment-for-approval:
-        type: approval
-        requires:
-        - test
-        filters:
-          branches:
-            only:
-              - main
-    - deploy:
-        context:
-          - prod_secrets
-          - admin_approval
-        requires:
-          - hold-deployment-for-approval
-        filters:
-            branches:
-              only:
-                - main
 jobs:
   build:
     docker:
@@ -52,4 +27,28 @@ jobs:
         name: "Deployment to production"
         command: |
           echo "deploying to production..."
-
+workflows:
+  my-workflow:
+    jobs:
+    - build
+    - test:
+        requires:
+        - build
+    - hold-deployment-for-approval:
+        type: approval
+        requires:
+        - test
+        filters:
+          branches:
+            only:
+              - main
+    - deploy:
+        context:
+          - prod_secrets
+          - admin_approval
+        requires:
+          - hold-deployment-for-approval
+        filters:
+            branches:
+              only:
+                - main
