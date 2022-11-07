@@ -9,7 +9,7 @@ jobs:
     - run:
         name: "Build app changes"
         command: |
-          echo "building... "
+          echo "building..."
   test:
     docker:
       - image: cimg/base:2021.07
