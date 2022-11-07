@@ -3,13 +3,13 @@ jobs:
   build:
     docker:
       - image: cimg/base:2021.07
-    resource_class: tsvi-account/special_resource_class
+    resource_class: small
     steps:
     - checkout
     - run:
         name: "Build app changes"
         command: |
-          echo "building..."
+          echo "building... "
   test:
     docker:
       - image: cimg/base:2021.07
@@ -48,7 +48,4 @@ workflows:
           - prod_secrets
         requires:
           - hold-deployment-for-approval
-        filters:
-            branches:
-              only:
-                - main
+
