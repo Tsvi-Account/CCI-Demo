@@ -48,7 +48,4 @@ workflows:
           - prod_secrets
         requires:
           - hold-deployment-for-approval
-        filters:
-            branches:
-              only:
-                - main
+
